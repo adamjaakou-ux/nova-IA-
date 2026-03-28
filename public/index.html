@@ -3,490 +3,736 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>NOVA AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #07070f;
-    --sidebar: #0d0d1a;
-    --card: #11111f;
-    --border: #1e1e35;
-    --accent: #6c63ff;
-    --accent2: #ff6584;
-    --text: #f0f0ff;
-    --muted: #4a4a70;
-    --green: #00e5a0;
-    --red: #ff4d6d;
-    --yellow: #ffd166;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { height: 100vh; height: 100dvh; display: flex; background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; overflow: hidden; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-/* SIDEBAR */
-.sidebar { width: 260px; background: var(–sidebar); border-right: 1px solid var(–border); display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; transition: transform 0.3s ease; }
-.sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 20px 16px 16px; border-bottom: 1px solid var(–border); }
-.logo-icon { width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, var(–accent), var(–accent2)); display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 0 20px rgba(108,99,255,0.5); flex-shrink: 0; }
-.logo-name { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
-.logo-name span { color: var(–accent); }
-.logo-badge { margin-left: auto; background: rgba(0,229,160,0.15); border: 1px solid rgba(0,229,160,0.3); color: var(–green); font-size: 9px; font-weight: 700; padding: 3px 7px; border-radius: 20px; letter-spacing: 1px; }
+:root {
+–bg: #07070f;
+–card: #0f0f1c;
+–border: #1c1c30;
+–accent: #7c6fff;
+–accent2: #ff6b8a;
+–text: #eeeeff;
+–muted: #555577;
+–green: #00e5a0;
+}
 
-.stats-bar { display: flex; gap: 6px; padding: 12px 14px; border-bottom: 1px solid var(–border); }
-.stat-chip { flex: 1; background: var(–card); border: 1px solid var(–border); border-radius: 10px; padding: 8px 6px; text-align: center; }
-.stat-value { font-size: 11px; font-weight: 800; }
-.stat-label { font-size: 9px; color: var(–muted); margin-top: 2px; letter-spacing: 0.5px; }
-.stat-chip.online .stat-value { color: var(–green); }
-.stat-chip.groq .stat-value { color: var(–accent); }
-.stat-chip.users .stat-value { color: var(–yellow); }
+body {
+font-family: ‘Outfit’, sans-serif;
+background: var(–bg);
+color: var(–text);
+height: 100vh;
+height: 100dvh;
+display: flex;
+flex-direction: column;
+overflow: hidden;
+font-size: 15px;
+}
 
-.new-chat-btn { margin: 12px 14px; padding: 12px; background: linear-gradient(135deg, var(–accent), var(–accent2)); border: none; border-radius: 12px; color: #fff; font-family: ‘Outfit’, sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(108,99,255,0.3); transition: all 0.2s; }
-.new-chat-btn:active { transform: scale(0.97); }
+/* ── HEADER ── */
+.header {
+background: var(–card);
+border-bottom: 1px solid var(–border);
+padding: 12px 16px;
+display: flex;
+align-items: center;
+gap: 10px;
+flex-shrink: 0;
+}
+.logo {
+display: flex;
+align-items: center;
+gap: 8px;
+margin-right: 6px;
+}
+.logo-icon {
+width: 34px; height: 34px;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+font-size: 17px;
+box-shadow: 0 0 16px rgba(124,111,255,0.4);
+flex-shrink: 0;
+}
+.logo-name { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
+.logo-name b { color: var(–accent); }
 
-.nav-section { padding: 8px 10px 4px; }
-.nav-label { font-size: 9px; color: var(–muted); letter-spacing: 2px; font-weight: 700; padding: 0 6px 6px; }
-.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; margin-bottom: 2px; }
-.nav-item:hover { background: rgba(108,99,255,0.08); }
-.nav-item.active { background: rgba(108,99,255,0.12); border-color: rgba(108,99,255,0.25); }
-.nav-icon { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; background: var(–card); }
-.nav-item.active .nav-icon { background: rgba(108,99,255,0.2); }
-.nav-text { font-size: 13px; font-weight: 600; }
-.nav-item.active .nav-text { color: var(–accent); }
-.nav-badge { margin-left: auto; background: var(–accent); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+.tabs {
+display: flex;
+gap: 5px;
+flex: 1;
+overflow-x: auto;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+padding: 7px 13px;
+border-radius: 20px;
+border: 1px solid transparent;
+background: none;
+color: var(–muted);
+font-family: ‘Outfit’, sans-serif;
+font-size: 13px;
+font-weight: 700;
+cursor: pointer;
+white-space: nowrap;
+transition: all 0.15s;
+-webkit-tap-highlight-color: transparent;
+}
+.tab.active {
+background: rgba(124,111,255,0.15);
+border-color: rgba(124,111,255,0.35);
+color: var(–accent);
+}
 
-.recent-list { flex: 1; overflow-y: auto; padding: 0 10px; }
-.recent-list::-webkit-scrollbar { width: 3px; }
-.recent-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; }
-.recent-item:hover { background: var(–card); }
-.recent-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.recent-dot.chat { background: var(–accent); }
-.recent-dot.code { background: var(–green); }
-.recent-text { font-size: 12px; color: var(–muted); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.recent-time { font-size: 10px; color: var(–muted); flex-shrink: 0; }
-
-.user-profile { padding: 12px 14px; border-top: 1px solid var(–border); display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.user-avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(–accent2), var(–accent)); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-.user-name { font-size: 13px; font-weight: 700; }
-.user-plan { font-size: 10px; color: var(–green); }
-
-/* MAIN */
-.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-.topbar { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(–border); background: rgba(7,7,15,0.95); backdrop-filter: blur(20px); flex-shrink: 0; }
-.menu-btn { width: 34px; height: 34px; border-radius: 9px; background: var(–card); border: 1px solid var(–border); color: var(–text); font-size: 16px; cursor: pointer; display: none; align-items: center; justify-content: center; }
-.topbar-title { font-size: 15px; font-weight: 800; flex: 1; }
-.model-pill { display: flex; align-items: center; gap: 6px; background: var(–card); border: 1px solid var(–border); border-radius: 20px; padding: 6px 12px; font-size: 11px; color: var(–muted); font-weight: 600; }
-.model-dot { width: 6px; height: 6px; border-radius: 50%; background: var(–green); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-.panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+/* ── PANELS ── */
+.panel { display: none; flex: 1; flex-direction: column; overflow: hidden; min-height: 0; }
 .panel.active { display: flex; }
 
-.messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-.messages::-webkit-scrollbar { width: 3px; }
-.messages::-webkit-scrollbar-thumb { background: var(–border); }
-
-.empty { margin: auto; text-align: center; padding: 20px; animation: fadeUp 0.5s ease; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-.empty-icon { width: 72px; height: 72px; border-radius: 22px; background: linear-gradient(135deg, var(–accent), var(–accent2)); margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 0 50px rgba(108,99,255,0.3); }
-.empty h2 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
-.empty p { color: var(–muted); font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
-.suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 460px; margin: 0 auto; }
-.sug { padding: 12px; background: var(–card); border: 1px solid var(–border); border-radius: 12px; text-align: left; cursor: pointer; font-family: ‘Outfit’, sans-serif; transition: all 0.2s; }
-.sug:hover { border-color: var(–accent); background: rgba(108,99,255,0.08); }
-.sug-icon { font-size: 20px; margin-bottom: 6px; }
-.sug-text { font-size: 12px; font-weight: 700; }
-.sug-sub { font-size: 10px; color: var(–muted); margin-top: 3px; }
-
-.msg { display: flex; gap: 10px; animation: fadeUp 0.3s ease; }
-.msg.user { flex-direction: row-reverse; }
-.msg-av { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; margin-top: 2px; }
-.msg.user .msg-av { background: var(–accent); }
-.msg.assistant .msg-av { background: linear-gradient(135deg, var(–accent), var(–accent2)); }
-.msg-bub { max-width: 75%; padding: 12px 16px; font-size: 14px; line-height: 1.75; word-break: break-word; }
-.msg.user .msg-bub { background: var(–accent); border-radius: 18px 18px 4px 18px; color: #fff; }
-.msg.assistant .msg-bub { background: var(–card); border: 1px solid var(–border); border-radius: 18px 18px 18px 4px; white-space: pre-wrap; }
-pre { background: #05050e; border: 1px solid #1a1a3a; border-radius: 10px; padding: 14px; overflow-x: auto; font-size: 12px; margin: 10px 0; color: #a0c4ff; font-family: monospace; line-height: 1.6; }
-
-.typing { display: flex; gap: 10px; }
-.typing-bub { background: var(–card); border: 1px solid var(–border); border-radius: 18px 18px 18px 4px; padding: 14px 18px; display: flex; gap: 5px; align-items: center; }
-.td { width: 6px; height: 6px; border-radius: 50%; background: var(–accent); animation: td 1.2s infinite; }
-.td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
-@keyframes td { 0%,60%,100%{opacity:.2;transform:scale(0.8)} 30%{opacity:1;transform:scale(1)} }
-
-.input-wrap { padding: 12px 20px 20px; background: rgba(7,7,15,0.98); border-top: 1px solid var(–border); flex-shrink: 0; }
-.input-box { display: flex; align-items: flex-end; gap: 10px; background: var(–card); border: 1px solid var(–border); border-radius: 16px; padding: 12px 14px; transition: border-color 0.2s; }
-.input-box:focus-within { border-color: rgba(108,99,255,0.5); box-shadow: 0 0 0 3px rgba(108,99,255,0.08); }
-textarea { flex: 1; background: none; border: none; outline: none; color: var(–text); font-family: ‘Outfit’, sans-serif; font-size: 15px; resize: none; line-height: 1.5; min-height: 24px; max-height: 120px; }
-textarea::placeholder { color: var(–muted); }
-.send-btn { width: 40px; height: 40px; border-radius: 12px; border: none; background: linear-gradient(135deg, var(–accent), var(–accent2)); color: #fff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(108,99,255,0.35); transition: all 0.2s; }
-.send-btn:disabled { background: var(–border); box-shadow: none; cursor: not-allowed; }
-.send-btn:not(:disabled):active { transform: scale(0.93); }
-
-/* IMAGE */
-.scroll-panel { flex: 1; overflow-y: auto; padding: 20px; }
-.scroll-panel::-webkit-scrollbar { width: 3px; }
-.section-h { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
-.section-s { color: var(–muted); font-size: 13px; margin-bottom: 18px; }
-.img-form { background: var(–card); border: 1px solid var(–border); border-radius: 16px; padding: 18px; margin-bottom: 20px; }
-.img-ta { width: 100%; min-height: 70px; background: var(–bg); border: 1px solid var(–border); border-radius: 10px; padding: 12px 14px; color: var(–text); font-family: ‘Outfit’, sans-serif; font-size: 14px; resize: none; outline: none; margin-bottom: 14px; }
-.img-ta:focus { border-color: rgba(108,99,255,0.4); }
-.fl { font-size: 10px; color: var(–muted); letter-spacing: 1.5px; margin-bottom: 6px; font-weight: 700; }
-select { width: 100%; background: var(–bg); border: 1px solid var(–border); border-radius: 10px; padding: 10px 12px; color: var(–text); font-family: ‘Outfit’, sans-serif; font-size: 14px; outline: none; margin-bottom: 16px; }
-.gen-btn { width: 100%; padding: 13px; background: linear-gradient(135deg, var(–accent), var(–accent2)); border: none; border-radius: 12px; color: #fff; font-family: ‘Outfit’, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-.gen-btn:disabled { background: var(–border); color: var(–muted); cursor: not-allowed; }
-.img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-.img-card { background: var(–card); border: 1px solid var(–border); border-radius: 14px; overflow: hidden; animation: fadeUp 0.4s ease; }
-.img-card img { width: 100%; display: block; aspect-ratio: 1; object-fit: cover; }
-.img-loading { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(–muted); }
-.spinner { width: 28px; height: 28px; border: 3px solid var(–border); border-top-color: var(–accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to{transform:rotate(360deg)} }
-.img-foot { padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; }
-.img-open { font-size: 11px; color: var(–accent); text-decoration: none; font-weight: 600; }
-.img-save { font-size: 11px; color: var(–muted); cursor: pointer; background: none; border: none; font-family: inherit; }
-
-/* LIBRARY */
-.lib-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-.lib-count-badge { font-size: 12px; color: var(–muted); background: var(–card); border: 1px solid var(–border); border-radius: 20px; padding: 4px 12px; }
-.lib-empty { text-align: center; padding: 60px 20px; color: var(–muted); }
-.lib-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.3; }
-.lib-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.lib-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 1; cursor: pointer; }
-.lib-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.lib-item-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); opacity: 0; transition: opacity 0.2s; display: flex; align-items: flex-end; padding: 6px; gap: 4px; }
-.lib-item:hover .lib-item-overlay { opacity: 1; }
-.lib-action { width: 28px; height: 28px; border-radius: 7px; background: rgba(255,255,255,0.2); border: none; color: #fff; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-/* PROFILE */
-.profile-card { background: var(–card); border: 1px solid var(–border); border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 16px; }
-.profile-av { width: 80px; height: 80px; border-radius: 24px; background: linear-gradient(135deg, var(–accent2), var(–accent)); margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
-.profile-name { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
-.profile-plan { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,229,160,0.1); border: 1px solid rgba(0,229,160,0.3); color: var(–green); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
-.profile-stats { display: flex; gap: 12px; }
-.pstat { flex: 1; background: var(–bg); border: 1px solid var(–border); border-radius: 12px; padding: 12px; text-align: center; }
-.pstat-val { font-size: 22px; font-weight: 900; }
-.pstat-lab { font-size: 10px; color: var(–muted); margin-top: 3px; }
-.info-section { background: var(–card); border: 1px solid var(–border); border-radius: 16px; overflow: hidden; margin-bottom: 16px; }
-.info-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(–border); cursor: pointer; }
-.info-row:last-child { border-bottom: none; }
-.info-icon { font-size: 18px; width: 30px; text-align: center; }
-.info-label { font-size: 11px; color: var(–muted); }
-.info-val { font-size: 13px; font-weight: 600; margin-top: 2px; }
-.info-right { margin-left: auto; font-size: 12px; font-weight: 700; }
-
-.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99; }
-@media (max-width: 700px) {
-.sidebar { position: fixed; left: 0; top: 0; bottom: 0; z-index: 100; transform: translateX(-100%); }
-.sidebar.open { transform: translateX(0); }
-.menu-btn { display: flex; }
-.overlay.show { display: block; }
-.suggestions { grid-template-columns: 1fr; }
+/* ── MESSAGES ── */
+.msgs {
+flex: 1;
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+padding: 16px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+min-height: 0;
 }
+.msgs::-webkit-scrollbar { width: 3px; }
+.msgs::-webkit-scrollbar-thumb { background: var(–border); border-radius: 2px; }
+
+/* Empty */
+.empty {
+margin: auto;
+text-align: center;
+padding: 24px 16px;
+}
+.empty-icon {
+width: 68px; height: 68px;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+border-radius: 20px;
+margin: 0 auto 16px;
+display: flex; align-items: center; justify-content: center;
+font-size: 30px;
+box-shadow: 0 0 40px rgba(124,111,255,0.25);
+}
+.empty h2 { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+.empty p { color: var(–muted); font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+
+.sugs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sug {
+padding: 11px 12px;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 12px;
+text-align: left;
+cursor: pointer;
+font-family: ‘Outfit’, sans-serif;
+color: var(–text);
+transition: all 0.15s;
+-webkit-tap-highlight-color: transparent;
+}
+.sug:active { border-color: var(–accent); background: rgba(124,111,255,0.1); }
+.sug-icon { font-size: 18px; margin-bottom: 5px; }
+.sug-title { font-size: 12px; font-weight: 700; }
+.sug-sub { font-size: 10px; color: var(–muted); margin-top: 2px; }
+
+/* Bubbles */
+.row { display: flex; gap: 8px; }
+.row.user { flex-direction: row-reverse; }
+.av {
+width: 30px; height: 30px;
+border-radius: 9px;
+display: flex; align-items: center; justify-content: center;
+font-size: 14px;
+flex-shrink: 0;
+margin-top: 2px;
+}
+.row.user .av { background: var(–accent); }
+.row.assistant .av { background: linear-gradient(135deg, var(–accent), var(–accent2)); }
+
+.bub {
+max-width: 78%;
+padding: 11px 14px;
+font-size: 14px;
+line-height: 1.7;
+word-break: break-word;
+}
+.row.user .bub {
+background: var(–accent);
+color: #fff;
+border-radius: 16px 16px 4px 16px;
+}
+.row.assistant .bub {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 16px 16px 16px 4px;
+white-space: pre-wrap;
+}
+
+pre {
+background: #04040c;
+border: 1px solid #1a1a30;
+border-radius: 8px;
+padding: 12px;
+overflow-x: auto;
+font-size: 12px;
+margin: 8px 0;
+color: #90c4ff;
+font-family: monospace;
+line-height: 1.6;
+}
+
+/* Typing */
+.typing-row { display: flex; gap: 8px; }
+.typing-bub {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 16px 16px 16px 4px;
+padding: 13px 16px;
+display: flex; gap: 5px; align-items: center;
+}
+.td {
+width: 6px; height: 6px;
+border-radius: 50%;
+background: var(–accent);
+animation: td 1.2s infinite;
+}
+.td:nth-child(2){animation-delay:.2s}
+.td:nth-child(3){animation-delay:.4s}
+@keyframes td { 0%,60%,100%{opacity:.2;transform:scale(.8)} 30%{opacity:1;transform:scale(1)} }
+
+/* ── INPUT ── */
+.input-area {
+padding: 10px 14px 16px;
+background: var(–card);
+border-top: 1px solid var(–border);
+flex-shrink: 0;
+}
+.input-row {
+display: flex;
+align-items: flex-end;
+gap: 8px;
+background: var(–bg);
+border: 1.5px solid var(–border);
+border-radius: 14px;
+padding: 10px 12px;
+transition: border-color 0.2s;
+}
+.input-row:focus-within { border-color: rgba(124,111,255,0.5); }
+textarea {
+flex: 1;
+background: none;
+border: none;
+outline: none;
+color: var(–text);
+font-family: ‘Outfit’, sans-serif;
+font-size: 15px;
+resize: none;
+line-height: 1.5;
+min-height: 22px;
+max-height: 110px;
+-webkit-user-select: text;
+user-select: text;
+}
+textarea::placeholder { color: var(–muted); }
+.send {
+width: 38px; height: 38px;
+border-radius: 11px;
+border: none;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+color: #fff;
+font-size: 16px;
+cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+flex-shrink: 0;
+box-shadow: 0 3px 12px rgba(124,111,255,0.35);
+transition: all 0.15s;
+-webkit-tap-highlight-color: transparent;
+}
+.send:disabled { background: var(–border); box-shadow: none; }
+.send:not(:disabled):active { transform: scale(0.92); }
+
+/* ── IMAGE PANEL ── */
+.scroll-panel {
+flex: 1;
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+padding: 16px;
+}
+.scroll-panel::-webkit-scrollbar { width: 3px; }
+
+.section-title { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+.section-sub { color: var(–muted); font-size: 13px; margin-bottom: 16px; }
+
+.img-form {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 16px;
+margin-bottom: 16px;
+}
+.img-ta {
+width: 100%;
+min-height: 70px;
+background: var(–bg);
+border: 1.5px solid var(–border);
+border-radius: 10px;
+padding: 11px 13px;
+color: var(–text);
+font-family: ‘Outfit’, sans-serif;
+font-size: 14px;
+resize: none;
+outline: none;
+margin-bottom: 12px;
+-webkit-user-select: text;
+user-select: text;
+}
+.img-ta:focus { border-color: rgba(124,111,255,0.4); }
+.field-label { font-size: 10px; color: var(–muted); letter-spacing: 1.5px; margin-bottom: 6px; font-weight: 700; }
+select {
+width: 100%;
+background: var(–bg);
+border: 1.5px solid var(–border);
+border-radius: 10px;
+padding: 9px 12px;
+color: var(–text);
+font-family: ‘Outfit’, sans-serif;
+font-size: 14px;
+outline: none;
+margin-bottom: 14px;
+}
+.gen-btn {
+width: 100%;
+padding: 13px;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+border: none;
+border-radius: 12px;
+color: #fff;
+font-family: ‘Outfit’, sans-serif;
+font-size: 15px;
+font-weight: 700;
+cursor: pointer;
+box-shadow: 0 4px 18px rgba(124,111,255,0.25);
+transition: all 0.15s;
+-webkit-tap-highlight-color: transparent;
+}
+.gen-btn:disabled { background: var(–border); box-shadow: none; color: var(–muted); }
+.gen-btn:not(:disabled):active { transform: scale(0.98); }
+
+/* Image grid - 2x2 all at once */
+.img-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+}
+.img-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 12px;
+overflow: hidden;
+animation: fadeUp 0.3s ease;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.img-card img { width: 100%; display: block; aspect-ratio: 1; object-fit: cover; }
+.img-loading {
+aspect-ratio: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 8px;
+color: var(–muted);
+font-size: 11px;
+}
+.spinner {
+width: 26px; height: 26px;
+border: 3px solid var(–border);
+border-top-color: var(–accent);
+border-radius: 50%;
+animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+.img-foot {
+padding: 7px 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.img-open { font-size: 11px; color: var(–accent); text-decoration: none; font-weight: 600; }
+.img-save { font-size: 11px; color: var(–muted); background: none; border: none; font-family: inherit; cursor: pointer; padding: 0; }
+
+/* Library */
+.lib-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 14px; }
+.lib-badge { background: var(–card); border: 1px solid var(–border); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(–muted); }
+.lib-empty { text-align: center; padding: 50px 20px; color: var(–muted); }
+.lib-empty div { font-size: 44px; margin-bottom: 12px; opacity: 0.3; }
+.lib-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.lib-item { border-radius: 10px; overflow: hidden; aspect-ratio: 1; position: relative; }
+.lib-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lib-del { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; background: rgba(0,0,0,0.6); border: none; border-radius: 7px; color: #fff; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+/* Status bar */
+.status-bar {
+display: flex;
+gap: 6px;
+padding: 8px 16px;
+background: var(–card);
+border-bottom: 1px solid var(–border);
+flex-shrink: 0;
+}
+.stat {
+display: flex;
+align-items: center;
+gap: 5px;
+font-size: 11px;
+color: var(–muted);
+font-weight: 600;
+}
+.stat-dot { width: 6px; height: 6px; border-radius: 50%; }
+.stat-dot.green { background: var(–green); box-shadow: 0 0 5px var(–green); animation: pulse 2s infinite; }
+.stat-dot.blue { background: var(–accent); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.stat-sep { color: var(–border); margin: 0 2px; }
 </style>
 
 </head>
 <body>
 
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
+<!-- HEADER -->
+
+<div class="header">
+  <div class="logo">
     <div class="logo-icon">⚡</div>
-    <div class="logo-name">NO<span>VA</span></div>
-    <div class="logo-badge">GRATUIT</div>
+    <div class="logo-name">NO<b>VA</b></div>
   </div>
-  <div class="stats-bar">
-    <div class="stat-chip online"><div class="stat-value">● EN LIGNE</div><div class="stat-label">STATUT</div></div>
-    <div class="stat-chip groq"><div class="stat-value">Groq</div><div class="stat-label">MODÈLE</div></div>
-    <div class="stat-chip users"><div class="stat-value" id="stat-users">—</div><div class="stat-label">CONNECTÉS</div></div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('chat',this)">💬 Chat</button>
+    <button class="tab" onclick="switchTab('code',this)">💻 Code</button>
+    <button class="tab" onclick="switchTab('image',this)">🎨 Images</button>
+    <button class="tab" onclick="switchTab('library',this)">🖼 Biblio</button>
   </div>
-  <button class="new-chat-btn" onclick="newChat()">✦ Nouveau Chat</button>
-  <div class="nav-section">
-    <div class="nav-label">NAVIGATION</div>
-    <div class="nav-item active" onclick="switchPanel('chat',this)"><div class="nav-icon">💬</div><div class="nav-text">Chat IA</div></div>
-    <div class="nav-item" onclick="switchPanel('code',this)"><div class="nav-icon">💻</div><div class="nav-text">Codeur Expert</div></div>
-    <div class="nav-item" onclick="switchPanel('image',this)"><div class="nav-icon">🎨</div><div class="nav-text">Générer Images</div></div>
-    <div class="nav-item" onclick="switchPanel('library',this)"><div class="nav-icon">🖼️</div><div class="nav-text">Bibliothèque</div><div class="nav-badge" id="lib-badge">0</div></div>
-    <div class="nav-item" onclick="switchPanel('profile',this)"><div class="nav-icon">👤</div><div class="nav-text">Mon Profil</div></div>
-  </div>
-  <div class="nav-section"><div class="nav-label">CHATS RÉCENTS</div></div>
-  <div class="recent-list" id="recent-list"><div style="padding:10px 6px;font-size:12px;color:var(--muted)">Aucun chat récent</div></div>
-  <div class="user-profile" onclick="switchPanel('profile',null)">
-    <div class="user-avatar">😎</div>
-    <div><div class="user-name">Mon compte</div><div class="user-plan">✦ Gratuit · Groq</div></div>
-  </div>
-</aside>
+</div>
 
-<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<!-- STATUS BAR -->
 
-<main class="main">
-  <div class="topbar">
-    <button class="menu-btn" onclick="openSidebar()">☰</button>
-    <div class="topbar-title" id="topbar-title">💬 Chat IA</div>
-    <div class="model-pill"><div class="model-dot"></div>Llama 3 · Groq</div>
-  </div>
+<div class="status-bar">
+  <div class="stat"><div class="stat-dot green"></div>En ligne</div>
+  <span class="stat-sep">·</span>
+  <div class="stat"><div class="stat-dot blue"></div>Groq · Llama 3</div>
+  <span class="stat-sep">·</span>
+  <div class="stat">👥 <span id="online-count">—</span> connectés</div>
+</div>
 
-  <!-- CHAT -->
+<!-- CHAT PANEL -->
 
-  <div class="panel active" id="panel-chat">
-    <div class="messages" id="chat-msgs">
-      <div class="empty" id="chat-empty">
-        <div class="empty-icon">⚡</div>
-        <h2>Bonjour !</h2>
-        <p>Je suis NOVA, votre assistant IA gratuit.<br>Posez-moi n'importe quelle question !</p>
-        <div class="suggestions">
-          <div class="sug" onclick="setQ('chat','C\'est quoi l\'intelligence artificielle ?')"><div class="sug-icon">🧠</div><div class="sug-text">C'est quoi l'IA ?</div><div class="sug-sub">Explication simple</div></div>
-          <div class="sug" onclick="setQ('chat','Donne-moi 5 idées de business en ligne')"><div class="sug-icon">💡</div><div class="sug-text">Idées business</div><div class="sug-sub">Gagner en ligne</div></div>
-          <div class="sug" onclick="setQ('chat','Comment apprendre à coder ?')"><div class="sug-icon">🚀</div><div class="sug-text">Apprendre à coder</div><div class="sug-sub">Par où commencer</div></div>
-          <div class="sug" onclick="setQ('chat','Traduis : Bonjour tout le monde')"><div class="sug-icon">🌍</div><div class="sug-text">Traduction</div><div class="sug-sub">FR → EN</div></div>
-        </div>
-      </div>
-    </div>
-    <div class="input-wrap">
-      <div class="input-box">
-        <textarea id="chat-input" placeholder="Posez votre question... (Entrée pour envoyer)" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg('chat')}" oninput="rsz(this)"></textarea>
-        <button class="send-btn" id="chat-send" onclick="sendMsg('chat')">➤</button>
+<div class="panel active" id="panel-chat">
+  <div class="msgs" id="chat-msgs">
+    <div class="empty" id="chat-empty">
+      <div class="empty-icon">💬</div>
+      <h2>Bonjour !</h2>
+      <p>Je suis NOVA, votre assistant IA.<br>Posez-moi n'importe quelle question !</p>
+      <div class="sugs">
+        <button class="sug" onclick="fillInput('chat','C\'est quoi l\'IA ?')"><div class="sug-icon">🧠</div><div class="sug-title">C'est quoi l'IA ?</div><div class="sug-sub">Explication simple</div></button>
+        <button class="sug" onclick="fillInput('chat','5 idées de business en ligne')"><div class="sug-icon">💡</div><div class="sug-title">Idées business</div><div class="sug-sub">Gagner en ligne</div></button>
+        <button class="sug" onclick="fillInput('chat','Comment apprendre à coder ?')"><div class="sug-icon">🚀</div><div class="sug-title">Apprendre à coder</div><div class="sug-sub">Par où commencer</div></button>
+        <button class="sug" onclick="fillInput('chat','Traduis en anglais : Bonjour')"><div class="sug-icon">🌍</div><div class="sug-title">Traduction</div><div class="sug-sub">FR → EN</div></button>
       </div>
     </div>
   </div>
-
-  <!-- CODE -->
-
-  <div class="panel" id="panel-code">
-    <div class="messages" id="code-msgs">
-      <div class="empty" id="code-empty">
-        <div class="empty-icon">💻</div>
-        <h2>Codeur Expert</h2>
-        <p>Décrivez ce que vous voulez créer.<br>Je génère le code complet.</p>
-        <div class="suggestions">
-          <div class="sug" onclick="setQ('code','Crée un jeu Pacman en Python')"><div class="sug-icon">🎮</div><div class="sug-text">Jeu Pacman</div><div class="sug-sub">Python</div></div>
-          <div class="sug" onclick="setQ('code','API REST Node.js Express')"><div class="sug-icon">🔌</div><div class="sug-text">API REST</div><div class="sug-sub">Node.js</div></div>
-          <div class="sug" onclick="setQ('code','Site e-commerce HTML CSS JS')"><div class="sug-icon">🛒</div><div class="sug-text">E-commerce</div><div class="sug-sub">HTML CSS JS</div></div>
-          <div class="sug" onclick="setQ('code','Application chat temps réel')"><div class="sug-icon">💬</div><div class="sug-text">Chat temps réel</div><div class="sug-sub">Socket.io</div></div>
-        </div>
-      </div>
+  <div class="input-area">
+    <div class="input-row">
+      <textarea id="chat-input" placeholder="Tapez votre message..." rows="1"
+        onkeydown="handleKey(event,'chat')"
+        oninput="autoResize(this)"></textarea>
+      <button class="send" id="chat-btn" onclick="sendMsg('chat')">➤</button>
     </div>
-    <div class="input-wrap">
-      <div class="input-box">
-        <textarea id="code-input" placeholder="Décrivez le code à créer..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg('code')}" oninput="rsz(this)"></textarea>
-        <button class="send-btn" id="code-send" onclick="sendMsg('code')">➤</button>
+  </div>
+</div>
+
+<!-- CODE PANEL -->
+
+<div class="panel" id="panel-code">
+  <div class="msgs" id="code-msgs">
+    <div class="empty" id="code-empty">
+      <div class="empty-icon">💻</div>
+      <h2>Codeur Expert</h2>
+      <p>Décrivez ce que vous voulez créer.<br>Je génère le code complet !</p>
+      <div class="sugs">
+        <button class="sug" onclick="fillInput('code','Jeu Pacman en Python')"><div class="sug-icon">🎮</div><div class="sug-title">Jeu Pacman</div><div class="sug-sub">Python</div></button>
+        <button class="sug" onclick="fillInput('code','API REST avec Node.js')"><div class="sug-icon">🔌</div><div class="sug-title">API REST</div><div class="sug-sub">Node.js</div></button>
+        <button class="sug" onclick="fillInput('code','Site e-commerce HTML CSS JS')"><div class="sug-icon">🛒</div><div class="sug-title">E-commerce</div><div class="sug-sub">HTML CSS JS</div></button>
+        <button class="sug" onclick="fillInput('code','Application de chat Socket.io')"><div class="sug-icon">💬</div><div class="sug-title">Chat temps réel</div><div class="sug-sub">Socket.io</div></button>
       </div>
     </div>
   </div>
-
-  <!-- IMAGE -->
-
-  <div class="panel" id="panel-image">
-    <div class="scroll-panel">
-      <div class="section-h">🎨 Générateur d'Images</div>
-      <div class="section-s">Décrivez votre image — résultat en quelques secondes</div>
-      <div class="img-form">
-        <textarea class="img-ta" id="img-prompt" placeholder="Ex: Un dragon survolant une ville futuriste au coucher du soleil..."></textarea>
-        <div class="fl">STYLE ARTISTIQUE</div>
-        <select id="img-style">
-          <option value="">🖼 Réaliste</option>
-          <option value="anime style">🎌 Anime</option>
-          <option value="watercolor style">🎨 Aquarelle</option>
-          <option value="oil painting">🖌 Peinture</option>
-          <option value="digital art">💻 Art numérique</option>
-          <option value="pixel art">👾 Pixel Art</option>
-          <option value="cyberpunk style">🌆 Cyberpunk</option>
-          <option value="studio ghibli style">🌿 Ghibli</option>
-          <option value="photorealistic">📷 Photoréaliste</option>
-        </select>
-        <button class="gen-btn" onclick="generateImages()">✨ Générer 4 images</button>
-      </div>
-      <div class="img-grid" id="img-grid"></div>
+  <div class="input-area">
+    <div class="input-row">
+      <textarea id="code-input" placeholder="Décrivez le code à créer..." rows="1"
+        onkeydown="handleKey(event,'code')"
+        oninput="autoResize(this)"></textarea>
+      <button class="send" id="code-btn" onclick="sendMsg('code')">➤</button>
     </div>
   </div>
+</div>
 
-  <!-- LIBRARY -->
+<!-- IMAGE PANEL -->
 
-  <div class="panel" id="panel-library">
-    <div class="scroll-panel">
-      <div class="lib-header">
-        <div><div class="section-h">🖼️ Bibliothèque</div><div class="section-s">Vos images sauvegardées</div></div>
-        <div class="lib-count-badge" id="lib-count-text">0 image</div>
+<div class="panel" id="panel-image">
+  <div class="scroll-panel">
+    <div class="section-title">🎨 Générer des Images</div>
+    <div class="section-sub">Toutes les 4 images apparaissent en même temps</div>
+    <div class="img-form">
+      <textarea class="img-ta" id="img-prompt" placeholder="Ex: Un chat astronaute sur la lune, ciel étoilé, ultra détaillé..." rows="3"></textarea>
+      <div class="field-label">STYLE</div>
+      <select id="img-style">
+        <option value="">🖼 Réaliste</option>
+        <option value="anime style">🎌 Anime</option>
+        <option value="watercolor style">🎨 Aquarelle</option>
+        <option value="oil painting">🖌 Peinture</option>
+        <option value="digital art">💻 Art numérique</option>
+        <option value="pixel art">👾 Pixel Art</option>
+        <option value="cyberpunk style">🌆 Cyberpunk</option>
+        <option value="studio ghibli style">🌿 Ghibli</option>
+        <option value="photorealistic">📷 Photoréaliste</option>
+      </select>
+      <button class="gen-btn" id="gen-btn" onclick="generateImages()">✨ Générer 4 images en même temps</button>
+    </div>
+    <div class="img-grid" id="img-grid"></div>
+  </div>
+</div>
+
+<!-- LIBRARY PANEL -->
+
+<div class="panel" id="panel-library">
+  <div class="scroll-panel">
+    <div class="lib-header">
+      <div>
+        <div class="section-title">🖼 Bibliothèque</div>
+        <div class="section-sub">Vos images sauvegardées</div>
       </div>
-      <div id="lib-content">
-        <div class="lib-empty"><div class="lib-empty-icon">🖼️</div><p>Générez des images et cliquez<br>"💾 Sauvegarder" pour les garder ici !</p></div>
-      </div>
+      <div class="lib-badge" id="lib-count">0 image</div>
+    </div>
+    <div id="lib-content">
+      <div class="lib-empty"><div>🖼</div><p>Générez des images et cliquez<br>💾 pour les sauvegarder ici</p></div>
     </div>
   </div>
-
-  <!-- PROFILE -->
-
-  <div class="panel" id="panel-profile">
-    <div class="scroll-panel">
-      <div class="profile-card">
-        <div class="profile-av">😎</div>
-        <div class="profile-name">Mon Compte NOVA</div>
-        <div class="profile-plan">✦ Plan Gratuit</div>
-        <div class="profile-stats">
-          <div class="pstat"><div class="pstat-val" id="total-msgs">0</div><div class="pstat-lab">Messages</div></div>
-          <div class="pstat"><div class="pstat-val" id="total-imgs">0</div><div class="pstat-lab">Images</div></div>
-          <div class="pstat"><div class="pstat-val">∞</div><div class="pstat-lab">Limite</div></div>
-        </div>
-      </div>
-      <div class="info-section">
-        <div class="info-row"><div class="info-icon">🤖</div><div><div class="info-label">Modèle IA</div><div class="info-val">Llama 3 · Groq</div></div><div class="info-right" style="color:var(--green)">ACTIF</div></div>
-        <div class="info-row"><div class="info-icon">🎨</div><div><div class="info-label">Images</div><div class="info-val">Pollinations AI</div></div><div class="info-right" style="color:var(--green)">GRATUIT</div></div>
-        <div class="info-row"><div class="info-icon">💰</div><div><div class="info-label">Coût total</div><div class="info-val">0€ — Totalement gratuit</div></div><div class="info-right">🎉</div></div>
-        <div class="info-row"><div class="info-icon">🔒</div><div><div class="info-label">Sécurité clé API</div><div class="info-val">Stockée côté serveur</div></div><div class="info-right" style="color:var(--green)">SÉCURISÉ</div></div>
-      </div>
-      <div class="info-section">
-        <div class="info-row" onclick="newChat()"><div class="info-icon">✦</div><div><div class="info-val">Nouveau Chat</div></div><div class="info-right">→</div></div>
-        <div class="info-row" onclick="clearLib()"><div class="info-icon">🗑️</div><div><div class="info-val">Vider la bibliothèque</div></div><div class="info-right" style="color:var(--red)">Effacer</div></div>
-      </div>
-    </div>
-  </div>
-</main>
+</div>
 
 <script>
-  const histories = { chat: [], code: [] };
-  const busy = { chat: false, code: false };
-  let library = JSON.parse(localStorage.getItem('nova_lib') || '[]');
-  let totalMsgs = +localStorage.getItem('nova_msgs') || 0;
-  let totalImgs = +localStorage.getItem('nova_imgs') || 0;
-  let recentChats = JSON.parse(localStorage.getItem('nova_recent') || '[]');
-  const titles = { chat:'💬 Chat IA', code:'💻 Codeur Expert', image:'🎨 Générer Images', library:'🖼️ Bibliothèque', profile:'👤 Mon Profil' };
+// ── STATE ──────────────────────────────────────────────────────
+const hist = { chat: [], code: [] };
+const busy = { chat: false, code: false };
+let library = JSON.parse(localStorage.getItem('nova_lib') || '[]');
 
-  updateLibUI(); updateRecent();
-  setInterval(() => { document.getElementById('stat-users').textContent = Math.floor(Math.random()*40+5); }, 6000);
-  document.getElementById('stat-users').textContent = Math.floor(Math.random()*40+5);
+// ── ONLINE COUNTER (simulé) ──────────────────────────────────
+function updateOnline() {
+  document.getElementById('online-count').textContent = Math.floor(Math.random() * 50 + 8);
+}
+updateOnline();
+setInterval(updateOnline, 8000);
 
-  function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
-  function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+// ── TABS ──────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'library') renderLibrary();
+}
 
-  function switchPanel(p, el) {
-    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
-    document.getElementById('panel-'+p).classList.add('active');
-    if(el) el.classList.add('active');
-    document.getElementById('topbar-title').textContent = titles[p];
-    closeSidebar();
-    if(p==='library') updateLibUI();
-    if(p==='profile') { document.getElementById('total-msgs').textContent=totalMsgs; document.getElementById('total-imgs').textContent=totalImgs; }
+// ── INPUT ──────────────────────────────────────────────────────
+function fillInput(mode, text) {
+  document.getElementById(mode + '-input').value = text;
+  document.getElementById(mode + '-input').focus();
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 110) + 'px';
+}
+
+function handleKey(e, mode) {
+  // Sur mobile on ne force pas Enter = envoyer (clavier virtuel)
+  if (e.key === 'Enter' && !e.shiftKey && window.innerWidth > 600) {
+    e.preventDefault();
+    sendMsg(mode);
+  }
+}
+
+// ── SEND MESSAGE ──────────────────────────────────────────────
+async function sendMsg(mode) {
+  const inp = document.getElementById(mode + '-input');
+  const text = inp.value.trim();
+  if (!text || busy[mode]) return;
+
+  inp.value = '';
+  inp.style.height = 'auto';
+  busy[mode] = true;
+  document.getElementById(mode + '-btn').disabled = true;
+
+  // Remove empty state
+  const empty = document.getElementById(mode + '-empty');
+  if (empty) empty.remove();
+
+  // Add user bubble
+  addBubble(mode, 'user', text);
+  hist[mode].push({ role: 'user', content: text });
+
+  // Add typing
+  const tid = addTyping(mode);
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: hist[mode], mode })
+    });
+    const data = await res.json();
+    removeEl(tid);
+    const reply = data.reply || ('⚠️ ' + (data.error || 'Erreur'));
+    addBubble(mode, 'assistant', reply);
+    hist[mode].push({ role: 'assistant', content: reply });
+  } catch (e) {
+    removeEl(tid);
+    addBubble(mode, 'assistant', '⚠️ Erreur : ' + e.message);
   }
 
-  function newChat() {
-    histories.chat=[]; histories.code=[];
-    document.getElementById('chat-msgs').innerHTML='<div class="empty" id="chat-empty"><div class="empty-icon">⚡</div><h2>Nouveau Chat</h2><p>Je suis prêt ! Posez votre question.</p></div>';
-    switchPanel('chat', document.querySelector('.nav-item'));
-  }
+  busy[mode] = false;
+  document.getElementById(mode + '-btn').disabled = false;
+}
 
-  function setQ(mode, text) { switchPanel(mode, null); document.getElementById(mode+'-input').value=text; }
-  function rsz(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; }
+function addBubble(mode, role, text) {
+  const c = document.getElementById(mode + '-msgs');
+  const row = document.createElement('div');
+  row.className = 'row ' + role;
+  row.innerHTML = `
+    <div class="av">${role === 'user' ? '👤' : '⚡'}</div>
+    <div class="bub">${formatText(text)}</div>
+  `;
+  c.appendChild(row);
+  c.scrollTop = c.scrollHeight;
+}
 
-  async function sendMsg(mode) {
-    const input = document.getElementById(mode+'-input');
-    const text = input.value.trim();
-    if(!text||busy[mode]) return;
-    input.value=''; input.style.height='auto';
-    busy[mode]=true;
-    document.getElementById(mode+'-send').disabled=true;
-    const empty=document.getElementById(mode+'-empty'); if(empty) empty.remove();
-    addBub(mode,'user',text);
-    histories[mode].push({role:'user',content:text});
-    addRecent(mode,text);
-    const tid=addTyping(mode);
-    try {
-      const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:histories[mode],mode})});
-      const data=await res.json();
-      removeEl(tid);
-      const reply=data.reply||('⚠️ '+(data.error||'Erreur'));
-      addBub(mode,'assistant',reply);
-      histories[mode].push({role:'assistant',content:reply});
-      totalMsgs+=2; localStorage.setItem('nova_msgs',totalMsgs);
-    } catch(e) { removeEl(tid); addBub(mode,'assistant','⚠️ Erreur réseau : '+e.message); }
-    busy[mode]=false; document.getElementById(mode+'-send').disabled=false;
-  }
+function addTyping(mode) {
+  const c = document.getElementById(mode + '-msgs');
+  const id = 'ty' + Date.now();
+  const row = document.createElement('div');
+  row.className = 'typing-row';
+  row.id = id;
+  row.innerHTML = `
+    <div class="av" style="background:linear-gradient(135deg,#7c6fff,#ff6b8a)">⚡</div>
+    <div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div>
+  `;
+  c.appendChild(row);
+  c.scrollTop = c.scrollHeight;
+  return id;
+}
 
-  function addBub(mode,role,text) {
-    const c=document.getElementById(mode+'-msgs');
-    const r=document.createElement('div'); r.className='msg '+role;
-    r.innerHTML=`<div class="msg-av">${role==='user'?'👤':'⚡'}</div><div class="msg-bub">${fmt(text)}</div>`;
-    c.appendChild(r); c.scrollTop=c.scrollHeight;
-  }
+function removeEl(id) { const e = document.getElementById(id); if (e) e.remove(); }
 
-  function addTyping(mode) {
-    const c=document.getElementById(mode+'-msgs'); const id='ty'+Date.now();
-    const r=document.createElement('div'); r.className='typing'; r.id=id;
-    r.innerHTML=`<div class="msg-av" style="background:linear-gradient(135deg,#6c63ff,#ff6584)">⚡</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
-    c.appendChild(r); c.scrollTop=c.scrollHeight; return id;
-  }
-
-  function removeEl(id){const e=document.getElementById(id);if(e)e.remove();}
-
-  function fmt(text) {
-    let html='',re=/```(\w*)\n?([\s\S]*?)```/g,last=0,m;
-    while((m=re.exec(text))!==null){if(m.index>last)html+=esc(text.slice(last,m.index));html+=`<pre>${esc(m[2].trim())}</pre>`;last=m.index+m[0].length;}
+function formatText(text) {
+  let html = '', re = /```(\w*)\n?([\s\S]*?)```/g, last = 0, m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) html += escHtml(text.slice(last, m.index));
+    html += `<pre>${escHtml(m[2].trim())}</pre>`;
 
 ```
-if(last<text.length)html+=esc(text.slice(last));
+last = m.index + m[0].length;
+```
+
+}
+if (last < text.length) html += escHtml(text.slice(last));
 return html;
-```
-
 }
-function esc(s){return s.replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’);}
+function escHtml(s) { return s.replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’); }
 
+// ── IMAGES - Toutes en même temps ─────────────────────────────
 function generateImages() {
-const prompt=document.getElementById(‘img-prompt’).value.trim();
-const style=document.getElementById(‘img-style’).value;
-if(!prompt) return;
-const grid=document.getElementById(‘img-grid’); grid.innerHTML=’’;
-const enc=encodeURIComponent(prompt+(style?’, ‘+style:’’)+’, high quality, detailed’);
-for(let i=0;i<4;i++){
-const seed=Math.floor(Math.random()*999999);
-const url=`https://image.pollinations.ai/prompt/${enc}?width=512&height=512&seed=${seed}&nologo=true`;
-const card=document.createElement(‘div’); card.className=‘img-card’;
-card.innerHTML=`<div class="img-loading"><div class="spinner"></div><span style="font-size:11px">Génération...</span></div>`;
+const prompt = document.getElementById(‘img-prompt’).value.trim();
+const style = document.getElementById(‘img-style’).value;
+if (!prompt) return;
+
+const btn = document.getElementById(‘gen-btn’);
+btn.disabled = true;
+btn.textContent = ‘⏳ Génération en cours…’;
+
+const grid = document.getElementById(‘img-grid’);
+grid.innerHTML = ‘’;
+
+const enc = encodeURIComponent(prompt + (style ? ’, ’ + style : ‘’) + ‘, high quality, detailed’);
+const seeds = Array.from({ length: 4 }, () => Math.floor(Math.random() * 999999));
+
+// Créer les 4 cartes loading IMMÉDIATEMENT
+seeds.forEach((seed, i) => {
+const card = document.createElement(‘div’);
+card.className = ‘img-card’;
+card.id = ‘card-’ + i;
+card.innerHTML = `<div class="img-loading"><div class="spinner"></div><span>Image ${i+1}/4</span></div>`;
 grid.appendChild(card);
-const img=new Image();
-img.onload=()=>{
-card.innerHTML=`<img src="${url}" alt="image"><div class="img-foot"><a class="img-open" href="${url}" target="_blank">↗ Ouvrir</a><button class="img-save" onclick="saveImg('${url}','${prompt.slice(0,30).replace(/'/g,'')}')">💾 Sauvegarder</button></div>`;
-totalImgs++; localStorage.setItem(‘nova_imgs’,totalImgs);
+});
+
+// Charger les 4 images EN PARALLÈLE
+let loaded = 0;
+seeds.forEach((seed, i) => {
+const url = `https://image.pollinations.ai/prompt/${enc}?width=512&height=512&seed=${seed}&nologo=true`;
+const img = new Image();
+img.onload = () => {
+document.getElementById(‘card-’ + i).innerHTML = ` <img src="${url}" alt="image"> <div class="img-foot"> <a class="img-open" href="${url}" target="_blank">↗ Ouvrir</a> <button class="img-save" onclick="saveImg('${url}','${prompt.slice(0,30).replace(/'/g,'')}')">💾</button> </div>`;
+loaded++;
+if (loaded === 4) {
+btn.disabled = false;
+btn.textContent = ‘✨ Générer 4 images en même temps’;
+}
 };
-img.onerror=()=>{card.innerHTML=`<div class="img-loading" style="color:var(--accent2)">❌ Échec</div>`;};
-img.src=url;
+img.onerror = () => {
+document.getElementById(‘card-’ + i).innerHTML = `<div class="img-loading" style="color:#ff6b8a">❌</div>`;
+loaded++;
+if (loaded === 4) {
+btn.disabled = false;
+btn.textContent = ‘✨ Générer 4 images en même temps’;
 }
+};
+img.src = url;
+});
 }
 
-function saveImg(url,prompt) {
-library.unshift({url,prompt,date:new Date().toLocaleDateString(‘fr’)});
-if(library.length>60) library.pop();
-localStorage.setItem(‘nova_lib’,JSON.stringify(library));
-updateLibUI();
-alert(‘✅ Sauvegardée dans la bibliothèque !’);
+// ── LIBRARY ───────────────────────────────────────────────────
+function saveImg(url, prompt) {
+library.unshift({ url, prompt, date: new Date().toLocaleDateString(‘fr’) });
+if (library.length > 60) library.pop();
+localStorage.setItem(‘nova_lib’, JSON.stringify(library));
+renderLibrary();
+alert(‘✅ Image sauvegardée !’);
 }
 
-function updateLibUI() {
-const n=library.length;
-document.getElementById(‘lib-badge’).textContent=n;
-document.getElementById(‘lib-count-text’).textContent=n+’ image’+(n>1?‘s’:’’);
-const c=document.getElementById(‘lib-content’);
-if(n===0){c.innerHTML=`<div class="lib-empty"><div class="lib-empty-icon">🖼️</div><p>Générez des images et cliquez<br>"💾 Sauvegarder" pour les garder ici !</p></div>`;return;}
-c.innerHTML=`<div class="lib-grid">${library.map((item,i)=>`
+function renderLibrary() {
+const n = library.length;
+document.getElementById(‘lib-count’).textContent = n + ’ image’ + (n > 1 ? ‘s’ : ‘’);
+const c = document.getElementById(‘lib-content’);
+if (n === 0) {
+c.innerHTML = `<div class="lib-empty"><div>🖼</div><p>Générez des images et cliquez<br>💾 pour les sauvegarder ici</p></div>`;
+return;
+}
+c.innerHTML = `<div class="lib-grid">${library.map((item, i) => `
 <div class="lib-item">
-<img src="${item.url}" alt="${item.prompt}" loading="lazy">
-<div class="lib-item-overlay">
-<button class="lib-action" onclick="window.open('${item.url}','_blank')">↗</button>
-<button class="lib-action" onclick="delImg(${i})">🗑</button>
-</div>
+<img src="${item.url}" alt="${item.prompt}" loading="lazy" onclick="window.open('${item.url}','_blank')">
+<button class="lib-del" onclick="delImg(${i})">🗑</button>
 </div>`).join('')}</div>`;
 }
 
-function delImg(i){library.splice(i,1);localStorage.setItem(‘nova_lib’,JSON.stringify(library));updateLibUI();}
-function clearLib(){if(confirm(‘Vider toute la bibliothèque ?’)){library=[];localStorage.removeItem(‘nova_lib’);updateLibUI();}}
-
-function addRecent(mode,text) {
-recentChats.unshift({mode,text:text.slice(0,35),time:new Date().toLocaleTimeString(‘fr’,{hour:‘2-digit’,minute:‘2-digit’})});
-if(recentChats.length>8) recentChats.pop();
-localStorage.setItem(‘nova_recent’,JSON.stringify(recentChats));
-updateRecent();
+function delImg(i) {
+library.splice(i, 1);
+localStorage.setItem(‘nova_lib’, JSON.stringify(library));
+renderLibrary();
 }
 
-function updateRecent() {
-const el=document.getElementById(‘recent-list’);
-if(recentChats.length===0){el.innerHTML=`<div style="padding:10px 6px;font-size:12px;color:var(--muted)">Aucun chat récent</div>`;return;}
-el.innerHTML=recentChats.map(r=>`<div class="recent-item"><div class="recent-dot ${r.mode}"></div><div class="recent-text">${r.text}</div><div class="recent-time">${r.time}</div></div>`).join(’’);
-}
+// Init
+renderLibrary();
 </script>
 
 </body>
